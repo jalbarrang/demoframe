@@ -1,5 +1,5 @@
 {
-  "name": "dreki-screen-recorder",
+  "name": "dreki-eye",
   "version": "1.0.0",
   "description": "A desktop application for recording your screen and audio",
   "main": "./out/main/index.js",

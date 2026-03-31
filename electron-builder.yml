@@ -1,5 +1,5 @@
-appId: com.electron.app
-productName: drekki-streams
+appId: cl.dreki.screen-recorder
+productName: dreki-eye
 directories:
   buildResources: build
 files:
@@ -12,13 +12,17 @@ files:
   - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
 asarUnpack:
   - resources/**
+
+# Windows builds
 win:
-  executableName: drekki-streams
+  executableName: Dreki Eye
 nsis:
-  artifactName: ${name}-${version}-setup.${ext}
-  shortcutName: ${productName}
-  uninstallDisplayName: ${productName}
+  artifactName: dreki-eye-${version}-setup.${ext}
+  shortcutName: Dreki Eye
+  uninstallDisplayName: Dreki Eye
   createDesktopShortcut: always
+
+# macOS builds
 mac:
   entitlementsInherit: build/entitlements.mac.plist
   extendInfo:
@@ -28,17 +32,20 @@ mac:
     - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
   notarize: false
 dmg:
-  artifactName: ${name}-${version}.${ext}
+  artifactName: dreki-eye-${version}.${ext}
+
+# Linux
 linux:
   target:
     - AppImage
-    - snap
-    - deb
-  maintainer: electronjs.org
+  maintainer: Juan Albarrán <jalbarrandev@gmail.com>
   category: Utility
 appImage:
-  artifactName: ${name}-${version}.${ext}
+  artifactName: dreki-eye-${version}.${ext}
+
 npmRebuild: false
+
+# Will move to github published releases
 publish:
   provider: generic
-  url: https://example.com/auto-updates
+  url: https://screen-recorder.dreki.cl/auto-updates

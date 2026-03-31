@@ -1,4 +1,4 @@
-# drekki-streams
+# Dreki Eye - Screen Recorder
 
 An Electron application with Svelte and TypeScript
 
