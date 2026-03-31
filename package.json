@@ -1,0 +1,48 @@
+{
+  "name": "dreki-screen-recorder",
+  "version": "1.0.0",
+  "description": "A desktop application for recording your screen and audio",
+  "main": "./out/main/index.js",
+  "author": "Juan Albarrán <jalbarrandev@gmail.com>",
+  "homepage": "https://dreki.cl/screen-recorder",
+  "scripts": {
+    "format": "oxfmt",
+    "lint": "oxlint",
+    "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
+    "svelte-check": "svelte-check --tsconfig ./tsconfig.json",
+    "typecheck": "npm run typecheck:node && npm run svelte-check",
+    "start": "electron-vite preview",
+    "dev": "electron-vite dev",
+    "build": "npm run typecheck && electron-vite build",
+    "postinstall": "electron-builder install-app-deps",
+    "build:unpack": "npm run build && electron-builder --dir",
+    "build:win": "npm run build && electron-builder --win",
+    "build:mac": "npm run build && electron-builder --mac",
+    "build:linux": "npm run build && electron-builder --linux"
+  },
+  "dependencies": {
+    "@electron-toolkit/preload": "^3.0.2",
+    "@electron-toolkit/utils": "^4.0.0",
+    "electron-updater": "^6.3.9"
+  },
+  "devDependencies": {
+    "@electron-toolkit/tsconfig": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^6.2.0",
+    "@types/node": "^22.19.1",
+    "electron": "^39.2.6",
+    "electron-builder": "^26.0.12",
+    "electron-vite": "^5.0.0",
+    "svelte": "^5.45.6",
+    "svelte-check": "^4.3.4",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.6",
+    "oxlint": "1.58.0",
+    "oxfmt": "0.43.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "electron",
+      "esbuild"
+    ]
+  }
+}
