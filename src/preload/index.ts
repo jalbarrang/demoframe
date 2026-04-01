@@ -1,22 +1,35 @@
-import { contextBridge } from 'electron'
-import { electronAPI } from '@electron-toolkit/preload'
+import { contextBridge, ipcRenderer } from 'electron'
+import type { IpcChannel, IpcRequest, IpcResponse, IpcEventChannel } from '../shared/ipc-channels'
 
-// Custom APIs for renderer
-const api = {}
+const api = {
+  invoke<C extends IpcChannel>(channel: C, ...args: IpcRequest<C> extends void ? [] : [IpcRequest<C>]): Promise<IpcResponse<C>> {
+    return ipcRenderer.invoke(channel, ...args)
+  },
 
-// Use `contextBridge` APIs to expose Electron APIs to
-// renderer only if context isolation is enabled, otherwise
-// just add to the DOM global.
+  send<C extends IpcChannel>(channel: C, ...args: IpcRequest<C> extends void ? [] : [IpcRequest<C>]): void {
+    ipcRenderer.send(channel, ...args)
+  },
+
+  on<C extends IpcEventChannel>(channel: C, callback: (data: IpcResponse<C>) => void): () => void {
+    const handler = (_event: Electron.IpcRendererEvent, data: IpcResponse<C>): void => callback(data)
+    ipcRenderer.on(channel, handler)
+    return () => ipcRenderer.removeListener(channel, handler)
+  },
+
+  once<C extends IpcEventChannel>(channel: C, callback: (data: IpcResponse<C>) => void): void {
+    ipcRenderer.once(channel, (_event, data) => callback(data))
+  }
+}
+
+export type DrekiAPI = typeof api
+
 if (process.contextIsolated) {
   try {
-    contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
   } catch (error) {
     console.error(error)
   }
 } else {
-  // @ts-ignore (define in dts)
-  window.electron = electronAPI
-  // @ts-ignore (define in dts)
+  // @ts-ignore global augmentation
   window.api = api
 }

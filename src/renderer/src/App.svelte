@@ -1,26 +1,71 @@
 <script lang="ts">
-  import Versions from './components/Versions.svelte'
-  import electronLogo from './assets/electron.svg'
+  import Router, { push, router } from 'svelte-spa-router'
+  import Sidebar from './components/Sidebar.svelte'
+  import Library from './views/Library.svelte'
+  import Settings from './views/Settings.svelte'
+  import SourcePicker from './views/SourcePicker.svelte'
+  import Onboarding from './views/Onboarding.svelte'
+  import RecordingBar from './views/RecordingBar.svelte'
+  import PostRecording from './views/PostRecording.svelte'
+  import { getSettings } from './lib/stores/settings.svelte'
+  import { getDevices } from './lib/stores/devices.svelte'
+  import { getRecording } from './lib/stores/recording.svelte'
+  import { ipc } from './lib/ipc'
 
-  const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
+  const settings = getSettings()
+  const devices = getDevices()
+  const recording = getRecording()
+
+  const routes = {
+    '/': Library,
+    '/settings': Settings,
+    '/source-picker': SourcePicker,
+    '/onboarding': Onboarding,
+    '/recording-bar': RecordingBar,
+    '/post-recording': PostRecording
+  }
+
+  let isRecordingBar = $derived(router.location === '/recording-bar')
+
+  $effect(() => {
+    const init = async () => {
+      await settings.load()
+      await devices.load()
+
+      if (settings.current.microphoneDeviceId) {
+        devices.select(settings.current.microphoneDeviceId)
+      }
+
+      if (!settings.loaded) return
+
+      const perms = await ipc.invoke('app:check-permissions')
+      const isFirstRun = !settings.current.saveDirectory
+      if (!perms.screenRecording && isFirstRun) {
+        push('/onboarding')
+      }
+    }
+
+    init()
+
+    const cleanupDevices = devices.setupListeners()
+    const cleanupRecording = recording.setupListeners()
+
+    return () => {
+      cleanupDevices()
+      cleanupRecording()
+    }
+  })
 </script>
 
-<img alt="logo" class="logo" src={electronLogo} />
-<div class="creator">Powered by electron-vite</div>
-<div class="text">
-  Build an Electron app with
-  <span class="svelte">Svelte</span>
-  and
-  <span class="ts">TypeScript</span>
-</div>
-<p class="tip">Please try pressing <code>F12</code> to open the devTool</p>
-<div class="actions">
-  <div class="action">
-    <a href="https://electron-vite.org/" target="_blank" rel="noreferrer">Documentation</a>
+{#if isRecordingBar}
+  <div class="h-screen w-screen flex items-center justify-center p-1.5">
+    <Router {routes} />
   </div>
-  <div class="action">
-    <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions a11y-missing-attribute-->
-    <a target="_blank" rel="noreferrer" on:click={ipcHandle}>Send IPC</a>
+{:else}
+  <div class="flex h-screen w-screen overflow-hidden">
+    <Sidebar />
+    <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <Router {routes} />
+    </main>
   </div>
-</div>
-<Versions />
+{/if}
