@@ -1,11 +1,13 @@
 <script lang="ts">
   import { Switch } from 'bits-ui'
   import { getSettings } from '../lib/stores/settings.svelte'
+  import { getUpdates } from '../lib/stores/updates.svelte'
   import MicSelector from '../components/MicSelector.svelte'
   import { ipc } from '../lib/ipc'
   import type { OutputFormat } from '../../../shared/ipc-channels'
 
   const settings = getSettings()
+  const updates = getUpdates()
 
   let micDeviceId = $state(settings.current.microphoneDeviceId)
 
@@ -42,6 +44,40 @@
     micDeviceId = deviceId
     settings.updateSetting('microphoneDeviceId', deviceId)
   }
+
+  async function checkForUpdates() {
+    await updates.checkForUpdates()
+  }
+
+  async function installUpdate() {
+    await updates.quitAndInstall()
+  }
+
+  let updateSummary = $derived.by(() => {
+    const status = updates.status
+    const version = status.availableVersion
+
+    switch (status.state) {
+      case 'disabled':
+        return status.message ?? 'Updates are available in packaged builds only.'
+      case 'checking':
+        return 'Checking GitHub Releases for a new version…'
+      case 'available':
+        return version ? `Version ${version} was found and is starting to download.` : 'A new version was found.'
+      case 'downloading':
+        return status.progressPercent != null
+          ? `Downloading the latest update — ${status.progressPercent}%`
+          : 'Downloading the latest update.'
+      case 'downloaded':
+        return version ? `Version ${version} is ready to install.` : 'An update is ready to install.'
+      case 'up-to-date':
+        return 'You already have the latest version.'
+      case 'error':
+        return status.message ?? 'The update check failed.'
+      default:
+        return status.message ?? 'Automatic updates are enabled.'
+    }
+  })
 
   $effect(() => {
     if (micDeviceId !== settings.current.microphoneDeviceId) {
@@ -197,6 +233,44 @@
         >
           <Switch.Thumb class="block w-4 h-4 rounded-full bg-text-primary shadow transition-transform translate-x-1 data-[state=checked]:translate-x-[18px]" />
         </Switch.Root>
+      </div>
+    </section>
+
+    <!-- Updates -->
+    <section class="space-y-4">
+      <h2 class="text-xs font-semibold uppercase tracking-wider text-text-muted">Updates</h2>
+
+      <div class="rounded-xl border border-border bg-bg-soft p-4">
+        <div class="flex items-start justify-between gap-4">
+          <div class="min-w-0 space-y-1">
+            <p class="text-sm text-text-primary">Current version</p>
+            <p class="text-xs text-text-secondary">{updates.status.currentVersion || 'Unknown'}</p>
+            <p class="pt-2 text-sm text-text-primary">Status</p>
+            <p class="text-xs text-text-secondary">{updateSummary}</p>
+            {#if updates.status.checkedAt}
+              <p class="text-xs text-text-muted">Last checked {new Date(updates.status.checkedAt).toLocaleString()}</p>
+            {/if}
+          </div>
+
+          <div class="flex shrink-0 items-center gap-2">
+            <button
+              onclick={checkForUpdates}
+              disabled={updates.status.state === 'checking' || updates.status.state === 'downloading' || updates.status.state === 'disabled'}
+              class="rounded-lg border border-border bg-bg-mute px-3 py-1.5 text-sm text-text-secondary transition-colors hover:border-border-hover disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {updates.status.state === 'checking' ? 'Checking…' : 'Check now'}
+            </button>
+
+            {#if updates.status.state === 'downloaded'}
+              <button
+                onclick={installUpdate}
+                class="rounded-lg bg-accent px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
+              >
+                Restart to install
+              </button>
+            {/if}
+          </div>
+        </div>
       </div>
     </section>
   </div>

@@ -73,6 +73,25 @@ export interface AppSettings {
   }
 }
 
+export type AppUpdateState =
+  | 'idle'
+  | 'disabled'
+  | 'checking'
+  | 'available'
+  | 'downloading'
+  | 'downloaded'
+  | 'up-to-date'
+  | 'error'
+
+export interface AppUpdateStatus {
+  state: AppUpdateState
+  currentVersion: string
+  availableVersion?: string
+  progressPercent?: number
+  checkedAt?: string
+  message?: string
+}
+
 export type IpcChannelMap = {
   'recording:start': { request: RecordingConfig; response: void }
   'recording:stop': { request: void; response: void }
@@ -104,11 +123,19 @@ export type IpcChannelMap = {
   'app:get-recovery-files': { request: void; response: { count: number; totalSize: number } | null }
   'app:recover-recording': { request: void; response: RecordingMeta | null }
   'app:discard-recovery': { request: void; response: void }
+  'app:get-update-status': { request: void; response: AppUpdateStatus }
+  'app:check-for-updates': { request: void; response: AppUpdateStatus }
+  'app:quit-and-install-update': { request: void; response: void }
+  'app:update-status': { request: void; response: AppUpdateStatus }
 }
 
 export type IpcChannel = keyof IpcChannelMap
 export type IpcRequest<C extends IpcChannel> = IpcChannelMap[C]['request']
 export type IpcResponse<C extends IpcChannel> = IpcChannelMap[C]['response']
 
-export type IpcEventChannel = 'recording:status' | 'recording:complete' | 'devices:changed'
+export type IpcEventChannel =
+  | 'recording:status'
+  | 'recording:complete'
+  | 'devices:changed'
+  | 'app:update-status'
 export type IpcInvokeChannel = Exclude<IpcChannel, IpcEventChannel>

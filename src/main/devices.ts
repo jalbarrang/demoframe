@@ -28,7 +28,5 @@ export function setupDeviceForwarding(mainWindow: { window: BrowserWindow | null
 
   start()
 
-  return void (() => {
-    stop
-  })()
+  process.on('exit', stop)
 }

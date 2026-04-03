@@ -13,6 +13,7 @@ import type { RecordingBarWindow } from './windows/recording-bar'
 import { getSettings, setSettings } from './settings'
 import { ChunkWriter } from './recording/chunk-writer'
 import { Muxer } from './recording/muxer'
+import type { AppUpdater } from './updater'
 import type {
   RecordingConfig,
   RecordingState,
@@ -25,6 +26,7 @@ import type {
 interface IpcDeps {
   mainWindow: MainWindow
   recordingBar: RecordingBarWindow
+  updater: AppUpdater
   onRecordingStateChange: (state: RecordingState) => void
 }
 
@@ -34,7 +36,7 @@ export function registerIpcHandlers(deps: IpcDeps): {
   chunkWriter: ChunkWriter
   getRecordingState: () => RecordingState
 } {
-  const { mainWindow, recordingBar, onRecordingStateChange } = deps
+  const { mainWindow, recordingBar, updater, onRecordingStateChange } = deps
   const chunkWriter = new ChunkWriter()
   const muxer = new Muxer()
 
@@ -282,6 +284,20 @@ export function registerIpcHandlers(deps: IpcDeps): {
 
   ipcMain.handle('app:discard-recovery', () => {
     ChunkWriter.discardRecoveryFiles()
+  })
+
+  // --- Updates ---
+
+  ipcMain.handle('app:get-update-status', () => {
+    return updater.getStatus()
+  })
+
+  ipcMain.handle('app:check-for-updates', async () => {
+    return updater.checkForUpdates()
+  })
+
+  ipcMain.handle('app:quit-and-install-update', () => {
+    updater.quitAndInstall()
   })
 
   // --- Devices (renderer initiates, we forward) ---

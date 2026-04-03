@@ -1,6 +1,7 @@
 <script lang="ts">
   import Router, { push, router } from 'svelte-spa-router'
   import Sidebar from './components/Sidebar.svelte'
+  import UpdateBanner from './components/UpdateBanner.svelte'
   import Library from './views/Library.svelte'
   import Settings from './views/Settings.svelte'
   import SourcePicker from './views/SourcePicker.svelte'
@@ -10,11 +11,13 @@
   import { getSettings } from './lib/stores/settings.svelte'
   import { getDevices } from './lib/stores/devices.svelte'
   import { getRecording } from './lib/stores/recording.svelte'
+  import { getUpdates } from './lib/stores/updates.svelte'
   import { ipc } from './lib/ipc'
 
   const settings = getSettings()
   const devices = getDevices()
   const recording = getRecording()
+  const updates = getUpdates()
 
   const routes = {
     '/': Library,
@@ -31,6 +34,7 @@
     const init = async () => {
       await settings.load()
       await devices.load()
+      await updates.load()
 
       if (settings.current.microphoneDeviceId) {
         devices.select(settings.current.microphoneDeviceId)
@@ -49,6 +53,7 @@
 
     const cleanupDevices = devices.setupListeners()
     const cleanupRecording = recording.setupListeners()
+    const cleanupUpdates = updates.setupListeners()
 
     const unsubComplete = ipc.on('recording:complete', () => {
       if (!isRecordingBar) {
@@ -59,6 +64,7 @@
     return () => {
       cleanupDevices()
       cleanupRecording()
+      cleanupUpdates()
       unsubComplete()
     }
   })
@@ -72,6 +78,7 @@
   <div class="flex h-screen w-screen overflow-hidden">
     <Sidebar />
     <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <UpdateBanner />
       <Router {routes} />
     </main>
   </div>

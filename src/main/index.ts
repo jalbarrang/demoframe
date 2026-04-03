@@ -6,6 +6,7 @@ import { TrayManager } from './tray'
 import { registerIpcHandlers } from './ipc-handlers'
 import { initSettings, getSetting } from './settings'
 import { setupDeviceForwarding } from './devices'
+import { AppUpdater } from './updater'
 
 import { join } from 'path'
 import { existsSync } from 'fs'
@@ -18,6 +19,11 @@ const recordingBar = new RecordingBarWindow()
 
 let getRecordingState: () => string = () => 'idle'
 let isQuitting = false
+
+const updater = new AppUpdater((status) => {
+  mainWindow.send('app:update-status', status)
+  recordingBar.send('app:update-status', status)
+})
 
 const tray = new TrayManager(
   mainWindow,
@@ -89,6 +95,7 @@ app.whenReady().then(async () => {
   const ipc = registerIpcHandlers({
     mainWindow,
     recordingBar,
+    updater,
     onRecordingStateChange: (state) => {
       tray.updateState(state)
     }
@@ -98,6 +105,7 @@ app.whenReady().then(async () => {
   tray.create(iconPath)
   registerGlobalShortcuts()
   setupDeviceForwarding(mainWindow)
+  updater.init()
 
   app.on('activate', () => {
     mainWindow.show()
