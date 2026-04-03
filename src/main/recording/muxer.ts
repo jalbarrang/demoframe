@@ -29,7 +29,7 @@ export class Muxer {
 
     mkdirSync(outputDir, { recursive: true })
 
-    const filename = `dreki-${formatTimestamp()}.${format}`
+    const filename = `demoframe-${formatTimestamp()}.${format}`
     const outputPath = join(outputDir, filename)
 
     const args = this.buildArgs({ videoPath, audioPath, outputPath, format })

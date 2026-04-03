@@ -1,6 +1,6 @@
-# Dreki Eye - Screen Recorder
+# DemoFrame
 
-An Electron application with Svelte and TypeScript
+A desktop app for recording short product demos, tutorials, and step-by-step walkthroughs.
 
 ## Recommended IDE Setup
 

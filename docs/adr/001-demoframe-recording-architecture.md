@@ -1,4 +1,4 @@
-# ADR-001: Screen Recorder Architecture
+# ADR-001: DemoFrame Recording Architecture
 
 **Status:** Accepted  
 **Date:** 2026-03-31  
@@ -6,7 +6,7 @@
 
 ## Context
 
-We need a personal desktop screen recorder that outputs MKV and MP4 files for sharing on Slack and Discord. Existing tools (Loom, ScreenStudio, macOS recorder) were rejected because they require online accounts or provide insufficient control over video output.
+We need DemoFrame: a personal desktop app for recording short product demos, tutorials, and walkthroughs that output MKV and MP4 files for sharing on Slack and Discord. Existing tools (Loom, ScreenStudio, macOS recorder) were rejected because they require online accounts or provide insufficient control over video output.
 
 The app is built as an Electron 39 desktop application with a Svelte 5 frontend.
 
@@ -130,8 +130,8 @@ TypeScript 6 with maximum strictness:
 
 ### File Management
 
-- Save location: configurable directory, default `~/Movies/Dreki Eye/`
-- File naming: timestamp-based `dreki-YYYY-MM-DD_HH-mm-ss.{mp4|mkv}`
+- Save location: configurable directory, default `~/Movies/DemoFrame/`
+- File naming: timestamp-based `demoframe-YYYY-MM-DD_HH-mm-ss.{mp4|mkv}`
 - Library: grid of thumbnail cards, newest first, with Open/Delete/Re-export actions
 
 ## Project Structure

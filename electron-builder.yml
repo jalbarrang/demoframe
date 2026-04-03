@@ -1,5 +1,5 @@
-appId: cl.dreki.screen-recorder
-productName: dreki-eye
+appId: io.github.jalbarrang.demoframe
+productName: DemoFrame
 directories:
   buildResources: build
 files:
@@ -15,11 +15,11 @@ asarUnpack:
 
 # Windows builds
 win:
-  executableName: Dreki Eye
+  executableName: DemoFrame
 nsis:
-  artifactName: dreki-eye-${version}-setup.${ext}
-  shortcutName: Dreki Eye
-  uninstallDisplayName: Dreki Eye
+  artifactName: demoframe-${version}-setup.${ext}
+  shortcutName: DemoFrame
+  uninstallDisplayName: DemoFrame
   createDesktopShortcut: always
 
 # macOS builds
@@ -32,7 +32,7 @@ mac:
     - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
   notarize: false
 dmg:
-  artifactName: dreki-eye-${version}.${ext}
+  artifactName: demoframe-${version}.${ext}
 
 # Linux
 linux:
@@ -41,11 +41,11 @@ linux:
   maintainer: Juan Albarrán <jalbarrandev@gmail.com>
   category: Utility
 appImage:
-  artifactName: dreki-eye-${version}.${ext}
+  artifactName: demoframe-${version}.${ext}
 
 npmRebuild: false
 
-# Will move to github published releases
 publish:
-  provider: generic
-  url: https://screen-recorder.dreki.cl/auto-updates
+  provider: github
+  owner: jalbarrang
+  repo: demoframe

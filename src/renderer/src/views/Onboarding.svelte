@@ -65,7 +65,7 @@
   const screenStep = {
     title: 'Screen Recording',
     description:
-      'Dreki Eye needs permission to capture your screen. Open Privacy & Security → Screen Recording and enable access. In dev mode, look for "Electron" or "Electron Helper" — not the app name.',
+      'DemoFrame needs permission to capture your screen. Open Privacy & Security → Screen Recording and enable access. In dev mode, look for "Electron" or "Electron Helper" — not the app name.',
     icon: 'M2 3h20v14H2V3zm4 18h12M8 17v4m8-4v4',
     buttonLabel: 'Open System Settings'
   }
@@ -103,7 +103,7 @@
       </div>
 
       <div>
-        <h1 class="text-2xl font-bold text-text-primary">Welcome to Dreki's Eye</h1>
+        <h1 class="text-2xl font-bold text-text-primary">Welcome to DemoFrame</h1>
 
         <p class="text-sm text-text-secondary mt-2">
           Let's set things up so you can start recording.
@@ -200,7 +200,7 @@
       </div>
       <div>
         <h2 class="text-2xl font-bold text-text-primary">You're all set!</h2>
-        <p class="text-sm text-text-secondary mt-2">Start capturing your screen with Dreki Eye.</p>
+        <p class="text-sm text-text-secondary mt-2">Start capturing your screen with DemoFrame.</p>
       </div>
       <button
         onclick={finish}

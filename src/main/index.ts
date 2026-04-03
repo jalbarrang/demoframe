@@ -78,7 +78,7 @@ function registerGlobalShortcuts(): void {
 app.whenReady().then(async () => {
   await initSettings()
 
-  electronApp.setAppUserModelId('cl.dreki.screen-recorder')
+  electronApp.setAppUserModelId('io.github.jalbarrang.demoframe')
 
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)

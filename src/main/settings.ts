@@ -3,7 +3,7 @@ import { join } from 'node:path'
 import type { AppSettings } from '../shared/ipc-channels'
 
 const defaults: AppSettings = {
-  saveDirectory: join(app.getPath('videos'), 'Dreki Eye'),
+  saveDirectory: join(app.getPath('videos'), 'DemoFrame'),
   defaultFormat: 'mp4',
   resolution: 'logical',
   frameRate: 30,

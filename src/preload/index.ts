@@ -21,7 +21,7 @@ const api = {
   }
 }
 
-export type DrekiAPI = typeof api
+export type DemoFrameAPI = typeof api
 
 if (process.contextIsolated) {
   try {

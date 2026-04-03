@@ -2,7 +2,7 @@ import { app } from 'electron'
 import { join } from 'path'
 import { mkdirSync, appendFileSync, rmSync, existsSync, readdirSync, statSync } from 'fs'
 
-const TEMP_ROOT = join(app.getPath('temp'), 'dreki-eye')
+const TEMP_ROOT = join(app.getPath('temp'), 'demoframe')
 
 export class ChunkWriter {
   private sessionDir: string | null = null

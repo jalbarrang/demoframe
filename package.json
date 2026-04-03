@@ -1,10 +1,10 @@
 {
-  "name": "dreki-eye",
+  "name": "demoframe",
   "version": "1.0.0",
-  "description": "A desktop application for recording your screen and audio",
+  "description": "A desktop application for recording short product demos and tutorials",
   "main": "./out/main/index.js",
   "author": "Juan Albarrán <jalbarrandev@gmail.com>",
-  "homepage": "https://dreki.cl/screen-recorder",
+  "homepage": "https://github.com/jalbarrang/demoframe",
   "scripts": {
     "format": "oxfmt",
     "lint": "oxlint",

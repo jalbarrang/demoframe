@@ -19,7 +19,7 @@ export class TrayManager {
       : nativeImage.createEmpty()
 
     this.tray = new Tray(icon)
-    this.tray.setToolTip('Dreki Eye')
+    this.tray.setToolTip('DemoFrame')
     this.rebuildMenu()
 
     this.tray.on('click', () => {
@@ -32,12 +32,12 @@ export class TrayManager {
     this.rebuildMenu()
 
     const tooltips: Partial<Record<RecordingState, string>> = {
-      idle: 'Dreki Eye',
-      recording: 'Dreki Eye — Recording',
-      paused: 'Dreki Eye — Paused',
-      muxing: 'Dreki Eye — Processing…'
+      idle: 'DemoFrame',
+      recording: 'DemoFrame — Recording',
+      paused: 'DemoFrame — Paused',
+      muxing: 'DemoFrame — Processing…'
     }
-    this.tray?.setToolTip(tooltips[state] ?? 'Dreki Eye')
+    this.tray?.setToolTip(tooltips[state] ?? 'DemoFrame')
   }
 
   private rebuildMenu(): void {
@@ -60,7 +60,7 @@ export class TrayManager {
       { type: 'separator' },
       { label: 'Settings', click: () => this.mainWindow.show() },
       { type: 'separator' },
-      { label: 'Quit Dreki Eye', click: () => this.onQuit() }
+      { label: 'Quit DemoFrame', click: () => this.onQuit() }
     ])
 
     this.tray?.setContextMenu(menu)

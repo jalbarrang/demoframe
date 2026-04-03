@@ -1,3 +1,4 @@
-provider: generic
-url: https://screen-recorder.dreki.cl/auto-updates
-updaterCacheDirName: dreki-eye-updater
+provider: github
+owner: jalbarrang
+repo: demoframe
+updaterCacheDirName: demoframe-updater
