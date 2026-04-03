@@ -21,7 +21,6 @@
     "build:linux": "pnpm run build && electron-builder --linux",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release:tag": "node scripts/release-tag.mjs",
     "release": "pnpm run typecheck && electron-builder --publish always"
   },
   "dependencies": {

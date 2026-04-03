@@ -49,12 +49,8 @@ Merging that PR updates `package.json` and changelog state for the next release.
 
 #### Publishing a release
 
-```bash
-# After merging the version PR, push the matching release tag
-$ pnpm release:tag
-```
-
-That tag triggers `.github/workflows/release.yml`, which builds and publishes macOS, Windows, and Linux artifacts to GitHub Releases.
+After the **Version Packages** PR is merged, `.github/workflows/tag-release.yml` automatically creates the matching `v<version>` tag.
+That tag then triggers `.github/workflows/release.yml`, which builds and publishes macOS, Windows, and Linux artifacts to GitHub Releases.
 
 If you want to publish the current platform manually, you can still run:
 
