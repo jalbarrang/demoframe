@@ -50,9 +50,16 @@
     const cleanupDevices = devices.setupListeners()
     const cleanupRecording = recording.setupListeners()
 
+    const unsubComplete = ipc.on('recording:complete', () => {
+      if (!isRecordingBar) {
+        push('/post-recording')
+      }
+    })
+
     return () => {
       cleanupDevices()
       cleanupRecording()
+      unsubComplete()
     }
   })
 </script>

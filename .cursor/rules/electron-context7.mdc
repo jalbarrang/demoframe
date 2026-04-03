@@ -1,0 +1,14 @@
+---
+description: Always use Context7 MCP for Electron API lookups instead of training data
+globs: src/main/**/*.ts, src/preload/**/*.ts
+alwaysApply: false
+---
+
+# Electron API: Always Use Context7
+
+When writing or modifying Electron main process or preload code, **always** look up the API via the Context7 MCP server before using any Electron API.
+
+1. Resolve the library ID: `resolve-library-id` with `libraryName: "electron"`
+2. Query the docs: `query-docs` with the resolved ID and your specific question
+
+Never rely on training data for Electron APIs — they change between major versions and the project tracks Electron 39+.

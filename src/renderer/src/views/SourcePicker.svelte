@@ -57,7 +57,6 @@
     }
 
     recording.startRecording(config)
-    push('/recording-bar')
   }
 </script>
 

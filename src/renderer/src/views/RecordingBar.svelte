@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { push } from 'svelte-spa-router'
   import { getRecording } from '../lib/stores/recording.svelte'
   import { getSettings } from '../lib/stores/settings.svelte'
   import { formatDuration } from '../lib/format-utils'
@@ -24,14 +23,6 @@
   function cancel() {
     recording.cancelRecording()
   }
-
-  $effect(() => {
-    if (recording.state === 'complete') {
-      push('/post-recording')
-    } else if (recording.state === 'cancelled' || recording.state === 'error') {
-      push('/')
-    }
-  })
 
   let cleanup: (() => void) | undefined
   $effect(() => {

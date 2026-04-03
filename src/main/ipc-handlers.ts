@@ -89,6 +89,7 @@ export function registerIpcHandlers(deps: IpcDeps): {
     chunkWriter.startSession()
     recordingStartTime = Date.now()
     setState('recording')
+    mainWindow.hide()
     recordingBar.show()
   })
 
@@ -115,6 +116,7 @@ export function registerIpcHandlers(deps: IpcDeps): {
       }
 
       recordingBar.hide()
+      mainWindow.show()
       setState('complete', { outputPath: meta.path })
       mainWindow.send('recording:complete', { path: meta.path, meta })
 
@@ -124,6 +126,7 @@ export function registerIpcHandlers(deps: IpcDeps): {
     } catch (err) {
       const message = err instanceof Error ? err.message : String(err)
       recordingBar.hide()
+      mainWindow.show()
       setState('error', { error: message })
       recordingStartTime = 0
       activeConfig = null
@@ -143,6 +146,7 @@ export function registerIpcHandlers(deps: IpcDeps): {
   ipcMain.handle('recording:cancel', () => {
     chunkWriter.cancel()
     recordingBar.hide()
+    mainWindow.show()
     recordingStartTime = 0
     activeConfig = null
     setState('cancelled')
