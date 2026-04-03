@@ -40,6 +40,12 @@ DemoFrame uses GitHub Releases for auto-updates.
 ```bash
 # Publish the current platform build to GitHub Releases
 $ GH_TOKEN=your_token pnpm release
+
+# Or let GitHub Actions build and publish all platforms from a tag
+$ git tag v1.0.0
+$ git push origin v1.0.0
 ```
+
+The release workflow lives in `.github/workflows/release.yml` and runs on macOS, Windows, and Linux whenever a `v*` tag is pushed.
 
 In development, updater checks are disabled by default. To test them locally against `dev-app-update.yml`, run the app with `DEMOFRAME_ENABLE_DEV_UPDATES=1`.
