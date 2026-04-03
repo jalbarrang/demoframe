@@ -37,15 +37,29 @@ $ pnpm build:linux
 
 DemoFrame uses GitHub Releases for auto-updates.
 
-```bash
-# Publish the current platform build to GitHub Releases
-$ GH_TOKEN=your_token pnpm release
+#### Versioning with Changesets
 
-# Or let GitHub Actions build and publish all platforms from a tag
-$ git tag v1.0.0
-$ git push origin v1.0.0
+```bash
+# Add a release note and bump intent in a feature PR
+$ pnpm changeset
 ```
 
-The release workflow lives in `.github/workflows/release.yml` and runs on macOS, Windows, and Linux whenever a `v*` tag is pushed.
+When changesets land on `main`, `.github/workflows/changesets.yml` creates or updates a **Version Packages** PR.
+Merging that PR updates `package.json` and changelog state for the next release.
+
+#### Publishing a release
+
+```bash
+# After merging the version PR, push the matching release tag
+$ pnpm release:tag
+```
+
+That tag triggers `.github/workflows/release.yml`, which builds and publishes macOS, Windows, and Linux artifacts to GitHub Releases.
+
+If you want to publish the current platform manually, you can still run:
+
+```bash
+$ GH_TOKEN=your_token pnpm release
+```
 
 In development, updater checks are disabled by default. To test them locally against `dev-app-update.yml`, run the app with `DEMOFRAME_ENABLE_DEV_UPDATES=1`.

@@ -19,6 +19,9 @@
     "build:win": "pnpm run build && electron-builder --win",
     "build:mac": "pnpm run build && electron-builder --mac",
     "build:linux": "pnpm run build && electron-builder --linux",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release:tag": "node scripts/release-tag.mjs",
     "release": "pnpm run typecheck && electron-builder --publish always"
   },
   "dependencies": {
@@ -31,6 +34,7 @@
     "svelte-spa-router": "^5.0.0"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.30.0",
     "@electron-toolkit/tsconfig": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^6.2.0",
     "@tailwindcss/vite": "^4.2.2",
